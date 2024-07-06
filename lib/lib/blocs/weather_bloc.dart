@@ -38,7 +38,14 @@ class WeatherLoaded extends WeatherState {
   List<Object> get props => [weather];
 }
 
-class WeatherError extends WeatherState {}
+class WeatherError extends WeatherState {
+  final String message;
+
+  const WeatherError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
 
 // BLoC
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
@@ -54,7 +61,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       final weather = await apiService.fetchWeather(event.city);
       emit(WeatherLoaded(weather: weather));
     } catch (e) {
-      emit(WeatherError());
+      emit(WeatherError(e.toString()));
     }
   }
 }
